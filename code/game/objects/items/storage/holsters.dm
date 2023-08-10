@@ -52,6 +52,11 @@
 	if(!. || !is_type_in_list(W,holsterable_allowed)) //check to see if the item being inserted is the snowflake item
 		return
 	holstered_item = W
+	sprite_slots_suffix = "_full"
+	if(!src.storage_slots)
+		sprite_slots_offset = W.w_class * -1
+	else
+		sprite_slots_offset = -1
 	update_icon() //So that the icon actually updates after we've assigned our holstered_item
 	playsound(src, sheathe_sound, 15, 1)
 
@@ -60,6 +65,8 @@
 	if(!. || !is_type_in_list(W,holsterable_allowed)) //check to see if the item being removed is the snowflake item
 		return
 	holstered_item = null
+	sprite_slots_suffix = ""
+	sprite_slots_offset = initial(sprite_slots_offset)
 	update_icon() //So that the icon actually updates after we've assigned our holstered_item
 	playsound(src, draw_sound, 15, 1)
 
@@ -70,11 +77,8 @@
 		return ..()
 
 /obj/item/storage/holster/update_icon_state()
-	if(holstered_item)
-		icon_state = initial(icon_state) + "_full"
-	else
-		icon_state = initial(icon_state)
-	item_state = icon_state
+	item_state = initial(icon_state) + sprite_slots_suffix
+	. = ..()
 
 /obj/item/storage/holster/update_icon()
 	. = ..()
@@ -485,6 +489,7 @@
 	max_storage_space = 28
 	icon = 'icons/Marine/marine-pouches.dmi'
 	icon_state = "flare"
+	sprite_slots = 3
 	storage_type_limits = list(/obj/item/weapon/gun/grenade_launcher/single_shot/flare = 1)
 	can_hold = list(
 		/obj/item/explosive/grenade/flare/civilian,
@@ -494,6 +499,10 @@
 	refill_types = list(/obj/item/storage/box/m94)
 	refill_sound = "rustle"
 	holsterable_allowed = list(/obj/item/weapon/gun/grenade_launcher/single_shot/flare/marine)
+
+/obj/item/storage/holster/flarepouch/examine(mob/user)
+	. = ..()
+	. += "You can refill a flaregun inhand by right clicking on this."
 
 /obj/item/storage/holster/flarepouch/attackby_alternate(obj/item/I, mob/user, params)
 	if(!istype(I, /obj/item/weapon/gun/grenade_launcher/single_shot/flare))

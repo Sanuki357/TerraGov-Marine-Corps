@@ -37,6 +37,10 @@
 	var/storage_slots = 7
 	///Defines how many versions of the sprites that gets progressively emptier as they get closer to "_0" in .dmi.
 	var/sprite_slots = null
+	///Tells update_icon_state() about how much weight it should ignore. E.g. a holstered weapon that has a dedicated slot in its sprite. Should be either 1 or w_class of the holstered weapon if the storage uses max_storage_space.
+	var/sprite_slots_offset = 0
+	///Adds the suffix to icon_state string before adding the dynamic empty sprite numbers.
+	var/sprite_slots_suffix = ""
 	var/atom/movable/screen/storage/boxes = null
 	///storage UI
 	var/atom/movable/screen/storage/storage_start = null
@@ -868,22 +872,22 @@
 
 /obj/item/storage/update_icon_state()
 	if(!sprite_slots)
-		icon_state = initial(icon_state)
 		return
 
-	var/total_weight = 0
+	var/total_weight = sprite_slots_offset
 
 	if(!storage_slots)
 		for(var/obj/item/i in contents)
 			total_weight += i.w_class
 		total_weight = ROUND_UP(total_weight / max_storage_space * sprite_slots)
 	else
-		total_weight = ROUND_UP(length(contents) / storage_slots * sprite_slots)
+		total_weight += length(contents)
+		total_weight = ROUND_UP(total_weight / storage_slots * sprite_slots)
 
-	if(!total_weight)
-		icon_state = initial(icon_state) + "_e"
+	if(total_weight <= 0)
+		icon_state = initial(icon_state) + sprite_slots_suffix + "_e"
 		return
 	if(sprite_slots > total_weight)
-		icon_state = initial(icon_state) + "_" + num2text(total_weight)
+		icon_state = initial(icon_state) + sprite_slots_suffix + "_[total_weight]"
 	else
-		icon_state = initial(icon_state)
+		icon_state = initial(icon_state) + sprite_slots_suffix
