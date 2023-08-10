@@ -37,7 +37,9 @@
 	var/storage_slots = 7
 	///Defines how many versions of the sprites that gets progressively emptier as they get closer to "_0" in .dmi.
 	var/sprite_slots = null
-	///Tells update_icon_state() about how much weight it should ignore. E.g. a holstered weapon that has a dedicated slot in its sprite. Should be either 1 or w_class of the holstered weapon if the storage uses max_storage_space.
+	///Indicate that the sprite has "_f" variant which is used when the container is full but is being watched by someone.
+	var/sprite_slots_f = FALSE
+	///Tells update_icon_state() about how much weight it should ignore. E.g. a holstered weapon that has a dedicated slot in its sprite. Should be either -1 or w_class of the holstered weapon if the storage uses max_storage_space.
 	var/sprite_slots_offset = 0
 	///Adds the suffix to icon_state string before adding the dynamic empty sprite numbers.
 	var/sprite_slots_suffix = ""
@@ -153,6 +155,8 @@
 
 	user.s_active = src
 	content_watchers |= user
+	if (sprite_slots)
+		update_icon()
 
 
 /obj/item/storage/proc/hide_from(mob/user as mob)
@@ -168,6 +172,8 @@
 	if(user.s_active == src)
 		user.s_active = null
 	content_watchers -= user
+	if (sprite_slots)
+		update_icon()
 
 
 /obj/item/storage/proc/can_see_content()
@@ -184,8 +190,9 @@
 	if(!opened)
 		orient2hud()
 		opened = 1
-	if (use_sound && user.stat != DEAD)
-		playsound(src.loc, src.use_sound, 25, 1, 3)
+	if (user.stat != DEAD)
+		if (use_sound)
+			playsound(src.loc, src.use_sound, 25, 1, 3)
 
 	if (user.s_active)
 		user.s_active.close(user)
@@ -883,6 +890,9 @@
 	else
 		total_weight += length(contents)
 		total_weight = ROUND_UP(total_weight / storage_slots * sprite_slots)
+
+	if(length(content_watchers))
+		total_weight -= 1
 
 	if(total_weight <= 0)
 		icon_state = initial(icon_state) + sprite_slots_suffix + "_e"
