@@ -578,3 +578,9 @@ GLOBAL_LIST_INIT(slot_str_to_slot, list(
 			return "Suit Storage Holster"
 		if(SLOT_IN_B_HOLSTER)
 			return "Back Holster"
+
+//SPRITE SLOTS TYPE, to define how sprites with sprite_slots should behave when interacted.
+///Container with single or multiple lids and no visible contents. Should decrement total_volume upon looking inside. E.g. magazine pouch, medlolly pouch, etc.
+#define SS_TYPE_LIDS 0
+///Container with a lid and visible contents. Should NOT decrement total_volume upon looking inside but only the lid. E.g. shotgun pouch, etc.
+#define SS_TYPE_CONTENTS_LID 1
