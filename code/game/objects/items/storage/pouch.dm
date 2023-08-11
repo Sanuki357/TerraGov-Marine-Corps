@@ -797,6 +797,7 @@
 	desc = "A pouch specialized for holding shotgun ammo."
 	icon_state = "shotshells"
 	sprite_slots = 4
+	sprite_slots_type = SS_TYPE_CONTENTS_LID
 	storage_slots = 4
 	draw_mode = 0
 	can_hold = list(/obj/item/ammo_magazine/handful)

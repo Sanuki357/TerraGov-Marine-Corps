@@ -4,7 +4,6 @@
 // Do not remove this functionality without good reason, cough reagent_containers cough.
 // -Sayu
 
-
 /obj/item/storage
 	name = "storage"
 	icon = 'icons/obj/items/storage/storage.dmi'
@@ -38,7 +37,7 @@
 	///Defines how many versions of the sprites that gets progressively emptier as they get closer to "_0" in .dmi.
 	var/sprite_slots = null
 	///Indicate that the sprite has "_f" variant which is used when the container is full but is being watched by someone.
-	var/sprite_slots_f = FALSE
+	var/sprite_slots_type = FALSE
 	///Tells update_icon_state() about how much weight it should ignore. E.g. a holstered weapon that has a dedicated slot in its sprite. Should be either -1 or w_class of the holstered weapon if the storage uses max_storage_space.
 	var/sprite_slots_offset = 0
 	///Adds the suffix to icon_state string before adding the dynamic empty sprite numbers.
@@ -883,7 +882,7 @@
 
 	var/total_weight = sprite_slots_offset
 
-	if(!storage_slots)
+	if (!storage_slots)
 		for(var/obj/item/i in contents)
 			total_weight += i.w_class
 		total_weight = ROUND_UP(total_weight / max_storage_space * sprite_slots)
@@ -891,13 +890,19 @@
 		total_weight += length(contents)
 		total_weight = ROUND_UP(total_weight / storage_slots * sprite_slots)
 
-	if(length(content_watchers))
-		total_weight -= 1
+	switch (sprite_slots_type)
+		if (SS_TYPE_LIDS)
+			if (length(content_watchers))
+				total_weight -= 1
+		if (SS_TYPE_CONTENTS_LID)
+			if (length(content_watchers) && sprite_slots <= total_weight)
+				icon_state = initial(icon_state) + sprite_slots_suffix + "_f"
+				return
 
-	if(total_weight <= 0)
+	if (total_weight <= 0)
 		icon_state = initial(icon_state) + sprite_slots_suffix + "_e"
 		return
-	if(sprite_slots > total_weight)
+	if (sprite_slots > total_weight)
 		icon_state = initial(icon_state) + sprite_slots_suffix + "_[total_weight]"
 	else
 		icon_state = initial(icon_state) + sprite_slots_suffix
