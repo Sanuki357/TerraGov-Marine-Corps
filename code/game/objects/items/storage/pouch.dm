@@ -74,6 +74,7 @@
 /obj/item/storage/pouch/general/large/som
 	desc = "A general purpose pouch used to carry small items used during mining."
 	icon_state = "large_drop_som"
+	sprite_slots = 3
 
 /obj/item/storage/pouch/bayonet
 	name = "bayonet sheath"
@@ -154,6 +155,7 @@
 	name = "mining first aid pouch"
 	desc = "A basic first aid pouch originally used by miners due to dangerous working conditions on the mining colonies. This one is marked as belonging to the SOM."
 	icon_state = "firstaid_som"
+	sprite_slots = 3
 
 /obj/item/storage/pouch/firstaid/som/full/Initialize(mapload)
 	. = ..()
@@ -419,6 +421,7 @@
 /obj/item/storage/pouch/grenade/som
 	desc = "It can contain grenades. This one looks to be made out of traditional SOM leather."
 	icon_state = "grenade_som"
+	sprite_slots = 6
 
 /obj/item/storage/pouch/grenade/som/combat_patrol/Initialize(mapload)
 	. = ..()
@@ -489,7 +492,7 @@
 	name = "medical injector pouch"
 	desc = "A specialized medical pouch that can only hold auto-injectors."
 	icon_state = "firstaid_injector"
-	sprite_slots = 5
+	sprite_slots = 3
 	storage_slots = 8
 	max_storage_space = 14
 	can_hold = list(/obj/item/reagent_containers/hypospray/autoinjector)
@@ -522,6 +525,7 @@
 /obj/item/storage/pouch/medical_injectors/som
 	desc = "A specialized medical pouch that can only hold auto-injectors. This one looks to be made out of traditional SOM leather."
 	icon_state = "firstaid_injector_som"
+	sprite_slots = 3
 
 /obj/item/storage/pouch/medical_injectors/som/firstaid/Initialize(mapload)
 	. = ..()
@@ -709,6 +713,7 @@
 /obj/item/storage/pouch/construction/som
 	desc = "It's designed to hold construction materials - glass/metal sheets, metal rods, barbed wire, cable coil, and empty sandbags. It also has a hook for an entrenching tool. Made with traditional SOM leather."
 	icon_state = "construction_som"
+	sprite_slots = 1
 
 /obj/item/storage/pouch/construction/icc
 	desc = "It's designed to hold construction materials - glass/metal sheets, metal rods, barbed wire, cable coil, and empty sandbags. It also has a hook for an entrenching tool. Made with synthetic tan."
@@ -754,6 +759,7 @@
 /obj/item/storage/pouch/tools/som
 	desc = "It's designed to hold maintenance tools - screwdriver, wrench, cable coil, etc. It also has a hook for an entrenching tool. Made with traditional SOM leather."
 	icon_state = "tools_som"
+	sprite_slots = 1
 
 /obj/item/storage/pouch/tools/som/full/Initialize(mapload)
 	. = ..()

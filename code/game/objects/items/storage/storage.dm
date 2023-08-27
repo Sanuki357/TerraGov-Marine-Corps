@@ -878,6 +878,7 @@
 
 /obj/item/storage/update_icon_state()
 	if(!sprite_slots)
+		icon_state = initial(icon_state) + sprite_slots_suffix
 		return
 
 	var/total_weight = sprite_slots_offset
